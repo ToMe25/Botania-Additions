@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "botaniaadditions:item/terrasteel_shovel"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "botaniaadditions:enabled": 1
+      },
+      "model": "botaniaadditions:item/terra_shovel_enabled"
+    }
+  ]
+}

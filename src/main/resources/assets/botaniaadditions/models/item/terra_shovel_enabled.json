@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "botaniaadditions:item/terrasteel_shovel",
+    "layer1": "botaniaadditions:item/terrasteel_shovel_overlay"
+  }
+}

@@ -1,0 +1,30 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory
+issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
+[[mods]] #mandatory
+    modId="botaniaadditions" #mandatory
+    version="${file.jarVersion}" #mandatory
+    displayName="Botania Additions" #mandatory
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/botaniaadditions"
+    logoFile="BotaniaAdditionsLogo.png"
+    credits="..."
+    authors="ToMe25"
+    description='''Botania Additions is a Botania addon that adds some stuff that should be in Botania imo, but isn't because Botania is feature frozen.'''
+[[dependencies.botaniaadditions]]
+    modId="forge"
+    mandatory=true
+    versionRange="[28.1,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.botaniaadditions]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14,1.14.4]"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.botaniaadditions]]
+    modId="botania"
+    mandatory=true
+    versionRange="[r1.11-376,)"
+    ordering="AFTER"
+    side="BOTH"

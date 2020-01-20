@@ -1,0 +1,12 @@
+{
+  "botaniaadditions.hasRegenIvy": "Tiene hiedra eterna",
+
+  "_comment0": "This means Terrasteel Shovel not Terra Harvester, but i left it here because it was in the original Botania PR and i can't realy translate it to this language.",
+  "item.botaniaadditions.terra_shovel": "Pala de terracero",
+  "item.botaniaadditions.regen_ivy": "Hiedra eterna",
+
+  "botaniaadditions.entry.regenIvy": "Hiedra eterna",
+  "botaniaadditions.page.regenIvy0": "Mientras que las herramientas de $(item)manacero$(0) o el $(item)elementio$(0) tienen la habilidad de captar $(thing)maná$(0) para protegerse, otras herramientas o armaduras no poseen esta habilidad.$(p)Un poco de $(item)hiedra eterna$(0) se puede añadir virtualmente a cualquier objeto permitiéndole repararse con $(item)maná$(0).",
+  "botaniaadditions.page.regenIvy1": "Para aplicarla, se debe crear la herramienta en cuestión con la hiedra eterna y 3 objetos que se usen para repararla en un yunque (ej. $(item)diamantes$(0) para un $(item)pico de diamante$(0)).$(p)Al no estar en contacto directo con el material, la cantidad de $(thing)maná$(0) usado por la hiedra en comparación con el $(item)manacero$(0) es bastante alta.",
+  "botaniaadditions.page.regenIvy2": "Trae tu azuela del infierno"
+}

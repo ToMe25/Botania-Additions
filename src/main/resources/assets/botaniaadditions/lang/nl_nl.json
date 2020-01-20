@@ -1,0 +1,13 @@
+{
+  "botaniaadditions.hasRegenIvy": "Heeft Tijdloze Klimop",
+
+  "_comment0": "This means Terrasteel Shovel not Terra Harvester, but i left it here because it was in the original Botania PR and i can't realy translate it to this language.",
+  "item.botaniaadditions.terra_shovel": "Terrastaal Schep",
+  "item.botaniaadditions.regen_ivy": "Tijdloze Klimop",
+
+  "botaniaadditions.entry.regenIvy": "Tijdloze Klimop",
+  "botaniaadditions.tagline.regenIvy": "Klimop die kan worden vastgemaakt aan voorwerpen voor reparatie met mana",
+  "botaniaadditions.page.regenIvy0": "$(item)Manastaal$(0) en $(item)Elementium$(0) gereedschappen hebben de eigenschap om $(thing)Mana$(0) te kunnen gebruiken om zichzelf te beschermen, maar dat hebben niet alle gereedschappen.$(p)Een handvol $(item)Tijdloze Klimop$(0) kan worden vastgemaakt aan praktisch elk voorwerp, wat toelaat dat het kan worden gerepareerd met $(thing)Mana$(0).",
+  "botaniaadditions.page.regenIvy1": "Om de klimop te bevestigen, moet het gereedschap simpelweg gecombineerd worden met de klimop, en 3 blokken van de stof die nodig is om het gereedschap te repareren op een aambeeld (bv. $(item)Diamanten$(0) for a $(item)Diamanten Houweel$(0)).$(p)Doordat het materiaal geen direct contact maakt, is de hoeveelheid $(thing)Mana$(0) verbruikt door de klimop vrij hoog vergeleken met $(item)Manastaal$(0).",
+  "botaniaadditions.page.regenIvy2": "Breng je eigen inferno"
+}
