@@ -1,3 +1,9 @@
 {
-  "type": "botaniaadditions:regen_ivy"
+  "type": "botaniaadditions:regen_ivy",
+  "conditions": [
+    {
+      "type": "forge:item_exists",
+      "item": "botaniaadditions:regen_ivy"
+    }
+  ]
 }

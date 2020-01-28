@@ -12,6 +12,7 @@ package com.tome.botaniaadditions.common.item;
 
 import com.tome.botaniaadditions.BotaniaAdditions;
 import com.tome.botaniaadditions.common.core.BotaniaAdditionsCreativeTab;
+import com.tome.botaniaadditions.common.core.handler.ConfigHandler;
 import com.tome.botaniaadditions.common.crafting.recipe.RegenIvyRecipe;
 import com.tome.botaniaadditions.common.item.equipment.tool.terrasteel.ItemTerraShovel;
 import com.tome.botaniaadditions.common.lib.LibItemNames;
@@ -46,10 +47,12 @@ public class ModItems {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
-		register(r, new ItemTerraShovel(unstackable()), LibItemNames.TERRA_SHOVEL);
-		register(r, new ItemRegenIvy(defaultBuilder()), LibItemNames.REGEN_IVY);
+		if (ConfigHandler.enableTerraHarvester.get())
+			register(r, new ItemTerraShovel(unstackable()), LibItemNames.TERRA_SHOVEL);
+		if (ConfigHandler.enableTimelessIvy.get())
+			register(r, new ItemRegenIvy(defaultBuilder()), LibItemNames.REGEN_IVY);
 	}
-	
+
 	@SubscribeEvent
 	public static void registerRecipeSerializers(RegistryEvent.Register<IRecipeSerializer<?>> evt) {
 		IForgeRegistry<IRecipeSerializer<?>> r = evt.getRegistry();

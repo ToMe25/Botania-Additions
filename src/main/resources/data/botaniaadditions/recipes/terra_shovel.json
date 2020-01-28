@@ -2,6 +2,12 @@
   "result": {
     "item": "botaniaadditions:terra_shovel"
   },
+  "conditions": [
+    {
+      "type": "forge:item_exists",
+      "item": "botaniaadditions:terra_shovel"
+    }
+  ],
   "pattern": [
     " T ",
     "TST",
