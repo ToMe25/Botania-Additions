@@ -13,7 +13,7 @@ issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
 [[dependencies.botaniaadditions]]
     modId="forge"
     mandatory=true
-    versionRange="[28.1,)"
+    versionRange="[28.2,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.botaniaadditions]]
@@ -25,19 +25,19 @@ issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
 [[dependencies.botaniaadditions]]
     modId="botania"
     mandatory=true
-    versionRange="[r1.11-376,)"
+    versionRange="[r1.11-378,)"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.botaniaadditions]]
     modId="patchouli"
     mandatory=true
-    versionRange="[1.1-22,)"
+    versionRange="[1.1-25,)"
     side="BOTH"
 
 [[dependencies.botaniaadditions]]
     modId="curios"
     mandatory=true
-    versionRange="[FORGE-1.14.4-1.0.2,)"
+    versionRange="[FORGE-1.14.4-1.0.6,)"
     ordering="AFTER"
     side="BOTH"
     

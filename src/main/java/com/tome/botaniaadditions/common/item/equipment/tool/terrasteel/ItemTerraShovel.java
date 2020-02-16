@@ -34,7 +34,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -76,8 +75,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		RayTraceResult raycast = ToolCommons.raytraceFromEntity(player.world, player, RayTraceContext.FluidMode.NONE,
-				10);
+		BlockRayTraceResult raycast = ToolCommons.raytraceFromEntity(player, 10, false);
 		if (raycast.getType() == RayTraceResult.Type.BLOCK) {
 			Direction face = ((BlockRayTraceResult) raycast).getFace();
 			breakOtherBlock(player, stack, pos, pos, face);
@@ -199,7 +197,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 		}
 
 		converted = HOE_LOOKUP.get(block);
-		if(converted == null && block.getBlock() == Blocks.FARMLAND)
+		if (converted == null && block.getBlock() == Blocks.FARMLAND)
 			converted = Blocks.FARMLAND.getDefaultState();
 		if (converted != null) {
 			BlockPos pos1 = new BlockPos(startX, pos.getY(), pos.getZ() - range);

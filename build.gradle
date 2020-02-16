@@ -91,7 +91,7 @@ repositories {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
-        name = "botania"
+        name = "botania and patchouli"
         url = "https://maven.blamejared.com/"
     }
     maven {
@@ -106,7 +106,7 @@ dependencies {
     compile fg.deobf("vazkii.botania:Botania:${botania_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-${minecraft_version}-${curios_version}")
-    compile fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    compile fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
 
 }
 
@@ -116,7 +116,7 @@ jar {
         attributes([
             "Specification-Title": "project.name",
             "Specification-Vendor": "ToMe25",
-            "Specification-Version": "${version}", // We are version 1 of ourselves
+            "Specification-Version": "${version}",
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"ToMe25"
