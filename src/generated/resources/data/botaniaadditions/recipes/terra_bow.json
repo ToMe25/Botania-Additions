@@ -4,16 +4,16 @@
     {
       "conditions": [
         {
-          "item": "botaniaadditions:terra_shovel",
+          "item": "botaniaadditions:terra_bow",
           "type": "forge:item_exists"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
         "pattern": [
-          " T ",
-          "TLT",
-          " L "
+          " LS",
+          "T S",
+          " LS"
         ],
         "key": {
           "T": {
@@ -21,10 +21,13 @@
           },
           "L": {
             "item": "botania:livingwood_twig"
+          },
+          "S": {
+            "item": "botania:mana_string"
           }
         },
         "result": {
-          "item": "botaniaadditions:terra_shovel"
+          "item": "botaniaadditions:terra_bow"
         }
       }
     }

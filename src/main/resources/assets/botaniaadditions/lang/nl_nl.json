@@ -1,9 +1,9 @@
 {
   "botaniaadditions.hasRegenIvy": "Heeft Tijdloze Klimop",
 
-  "_comment0": "This means Terrasteel Shovel not Terra Harvester, but i left it here because it was in the original Botania PR and i can't realy translate it to this language.",
-  "item.botaniaadditions.terra_shovel": "Terrastaal Schep",
+  "item.botaniaadditions.terra_shovel": "Terra Oogster",
   "item.botaniaadditions.regen_ivy": "Tijdloze Klimop",
+  "item.botaniaadditions.terra_bow": "Terra Boog",
 
   "botaniaadditions.entry.regenIvy": "Tijdloze Klimop",
   "botaniaadditions.tagline.regenIvy": "Klimop die kan worden vastgemaakt aan voorwerpen voor reparatie met mana",

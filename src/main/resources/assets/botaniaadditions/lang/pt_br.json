@@ -3,5 +3,6 @@
 
   "_comment0": "This means Terrasteel Shovel not Terra Harvester, but i left it here because it was in the original Botania PR and i can't realy translate it to this language.",
   "item.botaniaadditions.terra_shovel": "Pá de Terrasteel",
-  "item.botaniaadditions.regen_ivy": "Hera Eterna"
+  "item.botaniaadditions.regen_ivy": "Hera Eterna",
+  "imte.botaniaadditions.terra:bow": "Arco de Terra"
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "botaniaadditions:item/terra_bow",
+  "textures": {
+    "layer0": "botaniaadditions:item/bow_terra_pulling_3"
+  }
+}

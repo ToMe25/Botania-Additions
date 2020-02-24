@@ -14,6 +14,7 @@ import com.tome.botaniaadditions.BotaniaAdditions;
 import com.tome.botaniaadditions.common.core.BotaniaAdditionsCreativeTab;
 import com.tome.botaniaadditions.common.core.handler.ConfigHandler;
 import com.tome.botaniaadditions.common.crafting.recipe.RegenIvyRecipe;
+import com.tome.botaniaadditions.common.item.equipment.tool.terrasteel.ItemTerraBow;
 import com.tome.botaniaadditions.common.item.equipment.tool.terrasteel.ItemTerraShovel;
 import com.tome.botaniaadditions.common.lib.LibItemNames;
 
@@ -35,6 +36,8 @@ public class ModItems {
 	public static Item terraShovel;
 	@ObjectHolder(LibItemNames.REGEN_IVY)
 	public static Item regenIvy;
+	@ObjectHolder(LibItemNames.TERRA_BOW)
+	public static Item terraBow;
 
 	public static Item.Properties defaultBuilder() {
 		return new Item.Properties().group(BotaniaAdditionsCreativeTab.INSTANCE);
@@ -51,6 +54,8 @@ public class ModItems {
 			register(r, new ItemTerraShovel(unstackable()), LibItemNames.TERRA_SHOVEL);
 		if (ConfigHandler.enableTimelessIvy.get())
 			register(r, new ItemRegenIvy(defaultBuilder()), LibItemNames.REGEN_IVY);
+		if (ConfigHandler.enableTerraBow.get())
+			register(r, new ItemTerraBow(unstackable()), LibItemNames.TERRA_BOW);
 	}
 
 	@SubscribeEvent

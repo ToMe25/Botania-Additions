@@ -29,6 +29,7 @@ public class ConfigHandler {
 
 	public static BooleanValue enableTerraHarvester;
 	public static BooleanValue enableTimelessIvy;
+	public static BooleanValue enableTerraBow;
 
 	static {
 		loadConfig();
@@ -51,6 +52,8 @@ public class ConfigHandler {
 				"If this is set to true the Terra Harvester will be added to the game.");
 		enableTimelessIvy = getBoolean("enableTimelessIvy", CATEGORY_GENERAL, true,
 				"If this is set to true the Timeless Ivy will be added to the game.");
+		enableTerraBow = getBoolean("enableTerraBow", CATEGORY_GENERAL, true,
+				"If this is set to true the Terra Bow will be added to the game.");
 	}
 
 	public static BooleanValue getBoolean(String name, String category, boolean defaultValue, String comment) {

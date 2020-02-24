@@ -54,11 +54,17 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
 						.addCriterion("has_item", hasItem(vazkii.botania.common.item.ModItems.lifeEssence)),
 				hasItem(vazkii.botania.common.item.ModItems.lifeEssence), ModItems.regenIvy);
 		resultExists(consumer,
-				ShapedRecipeBuilder.shapedRecipe(ModItems.terraShovel)
-						.key('S', vazkii.botania.common.item.ModItems.livingwoodTwig)
-						.key('T', ModTags.Items.INGOTS_TERRASTEEL).patternLine(" T ").patternLine("TST")
-						.patternLine(" S ").addCriterion("has_item", hasItem(ModTags.Items.INGOTS_TERRASTEEL)),
+				ShapedRecipeBuilder.shapedRecipe(ModItems.terraShovel).key('T', ModTags.Items.INGOTS_TERRASTEEL)
+						.key('L', vazkii.botania.common.item.ModItems.livingwoodTwig).patternLine(" T ")
+						.patternLine("TLT").patternLine(" L ")
+						.addCriterion("has_item", hasItem(ModTags.Items.INGOTS_TERRASTEEL)),
 				hasItem(ModTags.Items.INGOTS_TERRASTEEL), ModItems.terraShovel);
+		resultExists(consumer,
+				ShapedRecipeBuilder.shapedRecipe(ModItems.terraBow).key('T', ModTags.Items.INGOTS_TERRASTEEL)
+						.key('L', vazkii.botania.common.item.ModItems.livingwoodTwig)
+						.key('S', vazkii.botania.common.item.ModItems.manaString).patternLine(" LS").patternLine("T S")
+						.patternLine(" LS").addCriterion("has_item", hasItem(ModTags.Items.INGOTS_TERRASTEEL)),
+				hasItem(ModTags.Items.INGOTS_TERRASTEEL), ModItems.terraBow);
 	}
 
 	private void specialRecipe(Consumer<IFinishedRecipe> consumer, SpecialRecipeSerializer<?> serializer) {

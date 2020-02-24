@@ -14,5 +14,6 @@ public class LibItemNames {
 
 	public static final String TERRA_SHOVEL = "terra_shovel";
 	public static final String REGEN_IVY = "regen_ivy";
+	public static final String TERRA_BOW = "terra_bow";
 
 }
