@@ -1,3 +1,13 @@
+/**
+ * This class was created by <ToMe25>. It's distributed as
+ * part of the Botania Additions Mod. Get the Source Code in github:
+ * https://github.com/ToMe25/Botania-Additions
+ *
+ * Botania Additions is Open Source and distributed under the
+ * MIT License: https://github.com/ToMe25/Botania-Additions/blob/master/LICENSE
+ *
+ * File Created @ [Jan 24, 2020, 15:22 (GMT)]
+ */
 package com.tome.botaniaadditions.common.item.equipment.tool.terrasteel;
 
 import javax.annotation.Nonnull;
