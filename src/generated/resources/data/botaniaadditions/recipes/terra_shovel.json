@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "item": "botaniaadditions:terra_shovel",
+          "type": "forge:item_exists"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " T ",
+          "TST",
+          " S "
+        ],
+        "key": {
+          "S": {
+            "item": "botania:livingwood_twig"
+          },
+          "T": {
+            "tag": "forge:ingots/terrasteel"
+          }
+        },
+        "result": {
+          "item": "botaniaadditions:terra_shovel"
+        }
+      }
+    }
+  ]
+}

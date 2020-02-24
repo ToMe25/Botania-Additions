@@ -85,6 +85,10 @@ minecraft {
     }
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 repositories {
     maven {
         name = "jei"
@@ -122,6 +126,11 @@ jar {
             "Implementation-Vendor" :"ToMe25"
         ])
     }
+}
+
+processResources {
+    // Exclude datagenerator .cache directory
+    exclude '.cache'
 }
 
 // Example configuration to allow publishing using the maven-publish task

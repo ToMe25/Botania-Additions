@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "item": "botaniaadditions:regen_ivy",
+          "type": "forge:item_exists"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:ingots/elementium"
+          },
+          {
+            "item": "minecraft:vine"
+          },
+          {
+            "item": "botania:life_essence"
+          }
+        ],
+        "result": {
+          "item": "botaniaadditions:regen_ivy"
+        }
+      }
+    }
+  ]
+}

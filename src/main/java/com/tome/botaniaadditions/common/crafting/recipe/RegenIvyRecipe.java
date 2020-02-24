@@ -25,7 +25,8 @@ import net.minecraft.world.World;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 
 public class RegenIvyRecipe extends SpecialRecipe {
-	public static final IRecipeSerializer<RegenIvyRecipe> SERIALIZER = new SpecialRecipeSerializer<>(RegenIvyRecipe::new);
+	public static final SpecialRecipeSerializer<RegenIvyRecipe> SERIALIZER = new SpecialRecipeSerializer<>(
+			RegenIvyRecipe::new);
 
 	public RegenIvyRecipe(ResourceLocation id) {
 		super(id);
@@ -37,24 +38,23 @@ public class RegenIvyRecipe extends SpecialRecipe {
 		boolean foundIvy = false;
 		int materialsFound = 0;
 
-		for(int i = 0; i < inv.getSizeInventory(); i++) {
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if(!stack.isEmpty()) {
-				if(stack.getItem() == ModItems.regenIvy)
+			if (!stack.isEmpty()) {
+				if (stack.getItem() == ModItems.regenIvy)
 					foundIvy = true;
-				else if(tool.isEmpty()
+				else if (tool.isEmpty()
 						&& !(stack.hasTag() && ItemNBTHelper.getBoolean(stack, ItemRegenIvy.TAG_REGEN, false))
 						&& stack.isDamageable())
 					tool = stack;
 			}
 		}
-		for(int i = 0; i < inv.getSizeInventory(); i++) {
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if(!stack.isEmpty()) {
-				if(materialsFound < 3 && !tool.isEmpty() && tool.getItem().getIsRepairable(tool, stack))
+			if (!stack.isEmpty()) {
+				if (materialsFound < 3 && !tool.isEmpty() && tool.getItem().getIsRepairable(tool, stack))
 					materialsFound++;
-			}
-			else if(!stack.isEmpty() && stack != tool && stack.getItem() != ModItems.regenIvy)
+			} else if (!stack.isEmpty() && stack != tool && stack.getItem() != ModItems.regenIvy)
 				return false;
 		}
 
@@ -66,9 +66,9 @@ public class RegenIvyRecipe extends SpecialRecipe {
 	public ItemStack getCraftingResult(@Nonnull CraftingInventory inv) {
 		ItemStack item = ItemStack.EMPTY;
 
-		for(int i = 0; i < inv.getSizeInventory(); i++) {
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if(!stack.isEmpty() && stack.isDamageable())
+			if (!stack.isEmpty() && stack.isDamageable())
 				item = stack;
 		}
 
