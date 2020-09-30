@@ -10,12 +10,12 @@
  */
 package com.tome.botaniaadditions.common.item.equipment.tool.terrasteel;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.tome.botaniaadditions.BotaniaAdditions;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,15 +30,17 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -52,6 +54,7 @@ import vazkii.botania.common.item.equipment.tool.ToolCommons;
 import vazkii.botania.common.item.equipment.tool.manasteel.ItemManasteelShovel;
 import vazkii.botania.common.item.relic.ItemLokiRing;
 import vazkii.botania.common.item.relic.ItemThorRing;
+import vazkii.botania.mixin.AccessorHoeItem;
 
 public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialBreaker {
 
@@ -68,9 +71,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 	private static final int MANA_PER_BONEMEAL = 300;
 
 	public ItemTerraShovel(Properties props) {
-		super(BotaniaAPI.TERRASTEEL_ITEM_TIER, props);
-		addPropertyOverride(new ResourceLocation(BotaniaAdditions.MODID, TAG_ENABLED),
-				(itemStack, world, entityLivingBase) -> isEnabled(itemStack) ? 1 : 0);
+		super(BotaniaAPI.instance().getTerrasteelItemTier(), props);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 		if (raycast.getType() == RayTraceResult.Type.BLOCK) {
 			Direction face = ((BlockRayTraceResult) raycast).getFace();
 			breakOtherBlock(player, stack, pos, pos, face);
-			ItemLokiRing.breakOnAllCursors(player, this, stack, pos, face);
+			ItemLokiRing.breakOnAllCursors(player, stack, pos, face);
 		}
 
 		return false;
@@ -119,8 +120,8 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 
 		int rangeY = Math.max(1, range);
 
-		Vec3i beginDiff = new Vec3i(doX ? -range : 0, doY ? -1 : 0, doZ ? -range : 0);
-		Vec3i endDiff = new Vec3i(doX ? range : 0, doY ? rangeY * 2 - 1 : 0, doZ ? range : 0);
+		Vector3i beginDiff = new Vector3i(doX ? -range : 0, doY ? -1 : 0, doZ ? -range : 0);
+		Vector3i endDiff = new Vector3i(doX ? range : 0, doY ? rangeY * 2 - 1 : 0, doZ ? range : 0);
 		Predicate<BlockState> filter = state -> state.getHarvestTool() == net.minecraftforge.common.ToolType.SHOVEL;
 		if (crop)
 			filter = state -> state.getBlock() instanceof IGrowable;
@@ -142,9 +143,9 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 		ItemStack stack = player.getHeldItem(hand);
 		setEnabled(stack, !isEnabled(stack));
 		if (!world.isRemote)
-			world.playSound(null, player.posX, player.posY, player.posZ, ModSounds.terraPickMode, SoundCategory.PLAYERS,
-					0.5F, 0.4F);
-		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+			world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), ModSounds.terraPickMode,
+					SoundCategory.PLAYERS, 0.5F, 0.4F);
+		return ActionResult.resultSuccess(stack);
 	}
 
 	@Nonnull
@@ -159,7 +160,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 			return ActionResultType.PASS;
 
 		Block block = world.getBlockState(pos).getBlock();
-		BlockState converted = field_195955_e.get(block);
+		BlockState converted = SHOVEL_LOOKUP.get(block);
 
 		int range = 2 + (!ItemThorRing.getThorRing(player).isEmpty() ? 1 : 0);
 		if (ItemTemperanceStone.hasTemperanceActive(player))
@@ -191,12 +192,12 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 					}
 					pos1 = new BlockPos(startX, pos1.getY(), pos1.getZ() + 1);
 				}
-				ToolCommons.damageItem(stack, 1, player, getManaPerDamage());
+				stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
 				return ActionResultType.SUCCESS;
 			}
 		}
 
-		converted = HOE_LOOKUP.get(block);
+		converted = AccessorHoeItem.getConversions().get(block);
 		if (converted == null && block.getBlock() == Blocks.FARMLAND)
 			converted = Blocks.FARMLAND.getDefaultState();
 		if (converted != null) {
@@ -245,7 +246,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 		World world = ctx.getWorld();
 		if (player != null && player.canPlayerEdit(pos, ctx.getFace(), stack)) {
 			BlockRayTraceResult trace = new BlockRayTraceResult(
-					new Vec3d(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D), ctx.getFace(), pos, false);
+					new Vector3d(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D), ctx.getFace(), pos, false);
 			ItemUseContext ctx1 = new ItemUseContext(world, player, ctx.getHand(), stack, trace);
 			UseHoeEvent event = new UseHoeEvent(ctx1);
 
@@ -253,12 +254,12 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 				return ActionResultType.FAIL;
 
 			if (event.getResult() == Event.Result.ALLOW) {
-				ToolCommons.damageItem(stack, 1, player, getManaPerDamage());
+				stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
 				return ActionResultType.SUCCESS;
 			}
 
 			Block block = world.getBlockState(pos).getBlock();
-			BlockState converted = HOE_LOOKUP.get(block);
+			BlockState converted = AccessorHoeItem.getConversions().get(block);
 
 			if (converted == null)
 				return ActionResultType.PASS;
@@ -273,7 +274,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 					return ActionResultType.SUCCESS;
 				else {
 					world.setBlockState(pos, converted);
-					ToolCommons.damageItem(stack, 1, player, getManaPerDamage());
+					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
 					return ActionResultType.SUCCESS;
 				}
 			}
@@ -287,8 +288,8 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 	}
 
 	private ActionResultType bonemealCrop(ItemUseContext ctx, BlockPos pos) {
-		if (!ManaItemHandler.requestManaExactForTool(ctx.getItem(), (PlayerEntity) ctx.getPlayer(), MANA_PER_BONEMEAL,
-				false))
+		if (!ManaItemHandler.instance().requestManaExactForTool(ctx.getItem(), (PlayerEntity) ctx.getPlayer(),
+				MANA_PER_BONEMEAL, false))
 			return ActionResultType.PASS;
 		World world = ctx.getWorld();
 		BlockPos pos1 = pos.offset(ctx.getFace());
@@ -297,18 +298,18 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 				world.playEvent(2005, pos, 0);
 			}
 
-			ManaItemHandler.requestManaExactForTool(ctx.getItem(), (PlayerEntity) ctx.getPlayer(), MANA_PER_BONEMEAL,
-					true);
+			ManaItemHandler.instance().requestManaExactForTool(ctx.getItem(), (PlayerEntity) ctx.getPlayer(),
+					MANA_PER_BONEMEAL, true);
 			return ActionResultType.SUCCESS;
 		} else {
 			BlockState blockstate = world.getBlockState(pos);
-			boolean flag = blockstate.func_224755_d(world, pos, ctx.getFace());
+			boolean flag = blockstate.isSolidSide(world, pos, ctx.getFace());
 			if (flag && growSeagrass(ctx.getItem(), world, pos1, ctx.getFace())) {
 				if (!world.isRemote) {
 					world.playEvent(2005, pos1, 0);
 				}
 
-				ManaItemHandler.requestManaExactForTool(ctx.getItem(), (PlayerEntity) ctx.getPlayer(),
+				ManaItemHandler.instance().requestManaExactForTool(ctx.getItem(), (PlayerEntity) ctx.getPlayer(),
 						MANA_PER_BONEMEAL, true);
 				return ActionResultType.SUCCESS;
 			} else {
@@ -327,10 +328,11 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 		if (blockstate.getBlock() instanceof IGrowable) {
 			IGrowable igrowable = (IGrowable) blockstate.getBlock();
 			if (igrowable.canGrow(worldIn, pos, blockstate, worldIn.isRemote)) {
-				if (!worldIn.isRemote) {
+				if (worldIn instanceof ServerWorld) {
 					if (igrowable.canUseBonemeal(worldIn, worldIn.rand, pos, blockstate)) {
-						igrowable.grow(worldIn, worldIn.rand, pos, blockstate);
+						igrowable.grow((ServerWorld) worldIn, worldIn.rand, pos, blockstate);
 					}
+
 					// remove stack.shrink to prevent the shovel from getting deleted.
 				}
 
@@ -343,26 +345,25 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 
 	// [VanillaCopy] of BoneMealItem.growSeagrass, edits noted
 	public static boolean growSeagrass(ItemStack stack, World worldIn, BlockPos pos, @Nullable Direction side) {
-		if (worldIn.getBlockState(pos).getBlock() == Blocks.WATER && worldIn.getFluidState(pos).getLevel() == 8) {
-			if (!worldIn.isRemote) {
-				label79: for (int i = 0; i < 128; ++i) {
+		if (worldIn.getBlockState(pos).isIn(Blocks.WATER) && worldIn.getFluidState(pos).getLevel() == 8) {
+			if (!(worldIn instanceof ServerWorld)) {
+				return true;
+			} else {
+				label80: for (int i = 0; i < 128; ++i) {
 					BlockPos blockpos = pos;
-					Biome biome = worldIn.getBiome(pos);
 					BlockState blockstate = Blocks.SEAGRASS.getDefaultState();
 
 					for (int j = 0; j < i / 16; ++j) {
 						blockpos = blockpos.add(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2,
 								random.nextInt(3) - 1);
-						biome = worldIn.getBiome(blockpos);
-						if (worldIn.getBlockState(blockpos).func_224756_o(worldIn, blockpos)) {
-							continue label79;
+						if (worldIn.getBlockState(blockpos).hasOpaqueCollisionShape(worldIn, blockpos)) {
+							continue label80;
 						}
 					}
 
-					if (net.minecraftforge.common.BiomeDictionary.hasType(biome,
-							net.minecraftforge.common.BiomeDictionary.Type.OCEAN)
-							&& net.minecraftforge.common.BiomeDictionary.hasType(biome,
-									net.minecraftforge.common.BiomeDictionary.Type.HOT)) {
+					Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(blockpos);
+					if (Objects.equals(optional, Optional.of(Biomes.WARM_OCEAN))
+							|| Objects.equals(optional, Optional.of(Biomes.DEEP_WARM_OCEAN))) {
 						if (i == 0 && side != null && side.getAxis().isHorizontal()) {
 							blockstate = BlockTags.WALL_CORALS.getRandomElement(worldIn.rand).getDefaultState()
 									.with(DeadCoralWallFanBlock.FACING, side);
@@ -380,17 +381,17 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 
 					if (blockstate.isValidPosition(worldIn, blockpos)) {
 						BlockState blockstate1 = worldIn.getBlockState(blockpos);
-						if (blockstate1.getBlock() == Blocks.WATER && worldIn.getFluidState(blockpos).getLevel() == 8) {
+						if (blockstate1.isIn(Blocks.WATER) && worldIn.getFluidState(blockpos).getLevel() == 8) {
 							worldIn.setBlockState(blockpos, blockstate, 3);
-						} else if (blockstate1.getBlock() == Blocks.SEAGRASS && random.nextInt(10) == 0) {
-							((IGrowable) Blocks.SEAGRASS).grow(worldIn, random, blockpos, blockstate1);
+						} else if (blockstate1.isIn(Blocks.SEAGRASS) && random.nextInt(10) == 0) {
+							((IGrowable) Blocks.SEAGRASS).grow((ServerWorld) worldIn, random, blockpos, blockstate1);
 						}
 					}
 				}
-				// remove stack.shrink to prevent the shovel from getting deleted.
-			}
 
-			return true;
+				// remove stack.shrink to prevent the shovel from getting deleted.
+				return true;
+			}
 		} else {
 			return false;
 		}

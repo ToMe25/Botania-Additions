@@ -22,9 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
@@ -39,16 +37,6 @@ public class ItemTerraBow extends ItemLivingwoodBow {
 
 	public ItemTerraBow(Properties builder) {
 		super(builder);
-		addPropertyOverride(new ResourceLocation("minecraft:pull"), (stack, worldIn, entityIn) -> {
-			if (entityIn == null) {
-				return 0.0F;
-			} else {
-				ItemStack itemstack = entityIn.getActiveItemStack();
-				return !itemstack.isEmpty() && itemstack.getItem() instanceof ItemLivingwoodBow
-						? (stack.getUseDuration() - entityIn.getItemInUseCount()) * chargeVelocityMultiplier() / 20.0F
-						: 0.0F;
-			}
-		});
 	}
 
 	// [VanillaCopy] super
@@ -61,15 +49,15 @@ public class ItemTerraBow extends ItemLivingwoodBow {
 
 		ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, worldIn,
 				playerIn, handIn, flag);
-		if (ret != null)
+		if (ret != null) {
 			return ret;
+		}
 
 		if (!playerIn.abilities.isCreativeMode && !flag) {
-			return flag ? new ActionResult<>(ActionResultType.PASS, itemstack)
-					: new ActionResult<>(ActionResultType.FAIL, itemstack);
+			return ActionResult.resultFail(itemstack);
 		} else {
 			playerIn.setActiveHand(handIn);
-			return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+			return ActionResult.resultConsume(itemstack);
 		}
 	}
 
@@ -112,9 +100,10 @@ public class ItemTerraBow extends ItemLivingwoodBow {
 								float yawAddition = (col - ARROW_COLS / 2) * 3F;
 								AbstractArrowEntity abstractarrowentity = arrowitem.createArrow(worldIn, itemstack,
 										playerentity);
-								abstractarrowentity = customeArrow(abstractarrowentity);
-								abstractarrowentity.shoot(playerentity, playerentity.rotationPitch + pitchAddition,
-										playerentity.rotationYaw + yawAddition, 0.0F, f * 3.0F, 0F);
+								abstractarrowentity = customArrow(abstractarrowentity);
+								abstractarrowentity.func_234612_a_(playerentity,
+										playerentity.rotationPitch + pitchAddition,
+										playerentity.rotationYaw + yawAddition, 0.0F, f * 3.0F, 1.0F);
 								if (f == 1.0F) {
 									abstractarrowentity.setIsCritical(true);
 								}
@@ -134,8 +123,12 @@ public class ItemTerraBow extends ItemLivingwoodBow {
 									abstractarrowentity.setFire(100);
 								}
 
-								// Botania - move damage into onFire
+								// Botania - onFire
 								onFire(stack, playerentity, flag1, abstractarrowentity);
+
+								stack.damageItem(1, playerentity, (p_220009_1_) -> {
+									p_220009_1_.sendBreakAnimation(playerentity.getActiveHand());
+								});
 								if (flag1 || playerentity.abilities.isCreativeMode
 										&& (itemstack.getItem() == Items.SPECTRAL_ARROW
 												|| itemstack.getItem() == Items.TIPPED_ARROW)) {
@@ -149,8 +142,8 @@ public class ItemTerraBow extends ItemLivingwoodBow {
 						}
 					}
 
-					worldIn.playSound((PlayerEntity) null, playerentity.posX, playerentity.posY, playerentity.posZ,
-							SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F,
+					worldIn.playSound((PlayerEntity) null, playerentity.getPosX(), playerentity.getPosY(),
+							playerentity.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F,
 							1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					// Botania Additions - The Power of Terra Steal allways creates new arrows.
 					playerentity.addStat(Stats.ITEM_USED.get(this));
@@ -159,20 +152,21 @@ public class ItemTerraBow extends ItemLivingwoodBow {
 		}
 	}
 
-	private float chargeVelocityMultiplier() {
+	@Override
+	public float chargeVelocityMultiplier() {
 		return 2F;
 	}
 
 	private boolean canFire(ItemStack stack, PlayerEntity player) {
 		boolean infinity = EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-		return player.abilities.isCreativeMode
-				|| ManaItemHandler.requestManaExactForTool(stack, player, ARROW_COST / (infinity ? 2 : 1), false);
+		return player.abilities.isCreativeMode || ManaItemHandler.instance().requestManaExactForTool(stack, player,
+				ARROW_COST / (infinity ? 2 : 1), false);
 	}
 
 	private void onFire(ItemStack stack, LivingEntity living, boolean infinity, AbstractArrowEntity arrow) {
 		arrow.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
 		if (living instanceof PlayerEntity)
-			ManaItemHandler.requestManaExactForTool(stack, (PlayerEntity) living, ARROW_COST / (infinity ? 2 : 1),
-					true);
+			ManaItemHandler.instance().requestManaExactForTool(stack, (PlayerEntity) living,
+					ARROW_COST / (infinity ? 2 : 1), true);
 	}
 }

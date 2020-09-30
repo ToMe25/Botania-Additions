@@ -12,6 +12,7 @@ package com.tome.botaniaadditions.common.item;
 
 import com.tome.botaniaadditions.BotaniaAdditions;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -19,10 +20,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
-import vazkii.botania.common.item.ItemMod;
 
 @Mod.EventBusSubscriber(modid = BotaniaAdditions.MODID)
-public class ItemRegenIvy extends ItemMod {
+public class ItemRegenIvy extends Item {
 
 	public static final String TAG_REGEN = "botaniaadditions_regenIvy";
 	private static final int MANA_PER_DAMAGE = 200;
@@ -38,7 +38,7 @@ public class ItemRegenIvy extends ItemMod {
 				ItemStack stack = event.player.inventory.getStackInSlot(i);
 				if (!stack.isEmpty() && stack.hasTag() && ItemNBTHelper.getBoolean(stack, TAG_REGEN, false)
 						&& stack.getDamage() > 0
-						&& ManaItemHandler.requestManaExact(stack, event.player, MANA_PER_DAMAGE, true))
+						&& ManaItemHandler.instance().requestManaExact(stack, event.player, MANA_PER_DAMAGE, true))
 					stack.setDamage(stack.getDamage() - 1);
 			}
 	}

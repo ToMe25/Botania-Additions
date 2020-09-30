@@ -68,7 +68,7 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
 	}
 
 	private void specialRecipe(Consumer<IFinishedRecipe> consumer, SpecialRecipeSerializer<?> serializer) {
-		CustomRecipeBuilder.func_218656_a(serializer).build(consumer,
+		CustomRecipeBuilder.customRecipe(serializer).build(consumer,
 				BotaniaAdditions.MODID + ":dynamic/" + serializer.getRegistryName().getPath());
 	}
 
@@ -87,7 +87,7 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
 												AdvancementRewards.Builder.recipe(result.asItem().getRegistryName()))
 										.withCriterion("has_item", trigger)
 										.withCriterion("has_the_recipe",
-												new RecipeUnlockedTrigger.Instance(result.asItem().getRegistryName()))
+												RecipeUnlockedTrigger.create(result.asItem().getRegistryName()))
 										.withRequirementsStrategy(IRequirementsStrategy.OR)))
 				.build(consumer, result.asItem().getRegistryName());
 	}
@@ -107,7 +107,7 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
 												AdvancementRewards.Builder.recipe(result.asItem().getRegistryName()))
 										.withCriterion("has_item", trigger)
 										.withCriterion("has_the_recipe",
-												new RecipeUnlockedTrigger.Instance(result.asItem().getRegistryName()))
+												RecipeUnlockedTrigger.create(result.asItem().getRegistryName()))
 										.withRequirementsStrategy(IRequirementsStrategy.OR)))
 				.build(consumer, result.asItem().getRegistryName());
 	}
