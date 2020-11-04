@@ -20,7 +20,7 @@ issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
 [[dependencies.botaniaadditions]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3]"
+    versionRange="[1.16.3,1.17)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.botaniaadditions]]
@@ -34,11 +34,9 @@ issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
     mandatory=true
     versionRange="[1.16-42,)"
     side="BOTH"
-
 [[dependencies.botaniaadditions]]
     modId="curios"
     mandatory=true
     versionRange="[1.16.3-4.0.1.0,)"
     ordering="AFTER"
     side="BOTH"
-    
