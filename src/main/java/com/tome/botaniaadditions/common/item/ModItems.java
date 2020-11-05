@@ -55,7 +55,7 @@ public class ModItems {
 		if (ConfigHandler.enableTimelessIvy.get())
 			register(r, new ItemRegenIvy(defaultBuilder()), LibItemNames.REGEN_IVY);
 		if (ConfigHandler.enableTerraBow.get())
-			register(r, new ItemTerraBow(unstackable()), LibItemNames.TERRA_BOW);
+			register(r, new ItemTerraBow(defaultBuilder().defaultMaxDamage(500)), LibItemNames.TERRA_BOW);
 	}
 
 	@SubscribeEvent
