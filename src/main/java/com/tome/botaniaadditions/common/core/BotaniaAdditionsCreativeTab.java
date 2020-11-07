@@ -11,8 +11,10 @@
 package com.tome.botaniaadditions.common.core;
 
 import com.tome.botaniaadditions.BotaniaAdditions;
+import com.tome.botaniaadditions.common.core.handler.ConfigHandler;
 import com.tome.botaniaadditions.common.item.ModItems;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -26,7 +28,17 @@ public class BotaniaAdditionsCreativeTab extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(ModItems.terraShovel);
+		Item icon;
+		if (ConfigHandler.enableTerraHarvester.get()) {
+			icon = ModItems.terraShovel;
+		} else if (ConfigHandler.enableTerraBow.get()) {
+			icon = ModItems.terraBow;
+		} else if (ConfigHandler.enableTimelessIvy.get()) {
+			icon = ModItems.regenIvy;
+		} else {
+			icon = vazkii.botania.common.item.ModItems.terrasteel;
+		}
+		return new ItemStack(icon);
 	}
 
 }
