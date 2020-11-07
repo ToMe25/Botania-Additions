@@ -11,6 +11,7 @@
 package com.tome.botaniaadditions.client.core.handler;
 
 import com.tome.botaniaadditions.BotaniaAdditions;
+import com.tome.botaniaadditions.common.core.handler.ConfigHandler;
 import com.tome.botaniaadditions.common.item.ModItems;
 import com.tome.botaniaadditions.common.item.equipment.tool.terrasteel.ItemTerraShovel;
 
@@ -39,22 +40,27 @@ public class ModelOverrideHandler {
 	}
 
 	private static void registerPropertyGetters() {
-		registerPropertyGetter(ModItems.terraShovel, new ResourceLocation(BotaniaAdditions.MODID, "enabled"),
-				(stack, world, entity) -> ItemTerraShovel.isEnabled(stack) ? 1 : 0);
-		
-		IItemPropertyGetter pulling = ItemModelsProperties.func_239417_a_(Items.BOW, new ResourceLocation("pulling"));
-		IItemPropertyGetter pull = (stack, worldIn, entity) -> {
-			if (entity == null) {
-				return 0.0F;
-			} else {
-				ItemLivingwoodBow item = ((ItemLivingwoodBow) stack.getItem());
-				return entity.getActiveItemStack() != stack
-						? 0.0F
-						: (stack.getUseDuration() - entity.getItemInUseCount()) * item.chargeVelocityMultiplier() / 20.0F;
-			}
-		};
-		registerPropertyGetter(ModItems.terraBow, new ResourceLocation("pulling"), pulling);
-		registerPropertyGetter(ModItems.terraBow, new ResourceLocation("pull"), pull);
+		if (ConfigHandler.enableTerraHarvester.get()) {
+			registerPropertyGetter(ModItems.terraShovel, new ResourceLocation(BotaniaAdditions.MODID, "enabled"),
+					(stack, world, entity) -> ItemTerraShovel.isEnabled(stack) ? 1 : 0);
+		}
+
+		if (ConfigHandler.enableTerraBow.get()) {
+			IItemPropertyGetter pulling = ItemModelsProperties.func_239417_a_(Items.BOW,
+					new ResourceLocation("pulling"));
+			IItemPropertyGetter pull = (stack, worldIn, entity) -> {
+				if (entity == null) {
+					return 0.0F;
+				} else {
+					ItemLivingwoodBow item = ((ItemLivingwoodBow) stack.getItem());
+					return entity.getActiveItemStack() != stack ? 0.0F
+							: (stack.getUseDuration() - entity.getItemInUseCount()) * item.chargeVelocityMultiplier()
+									/ 20.0F;
+				}
+			};
+			registerPropertyGetter(ModItems.terraBow, new ResourceLocation("pulling"), pulling);
+			registerPropertyGetter(ModItems.terraBow, new ResourceLocation("pull"), pull);
+		}
 	}
 
 }
