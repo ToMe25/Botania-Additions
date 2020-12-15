@@ -126,7 +126,7 @@ public class ItemTerraShovel extends ItemManasteelShovel implements ISequentialB
 		if (crop)
 			filter = state -> state.getBlock() instanceof IGrowable;
 
-		ToolCommons.removeBlocksInIteration(player, stack, world, pos, beginDiff, endDiff, filter, false);
+		ToolCommons.removeBlocksInIteration(player, stack, world, pos, beginDiff, endDiff, filter);
 	}
 
 	public static boolean isEnabled(ItemStack stack) {

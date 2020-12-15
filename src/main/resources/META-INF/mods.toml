@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[34,)" #mandatory
+loaderVersion="[35,)" #mandatory
 license="MIT License" #mandatory
 issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
 [[mods]] #mandatory
@@ -14,13 +14,13 @@ issueTrackerURL="https://github.com/ToMe25/Botania-Additions/issues"
 [[dependencies.botaniaadditions]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[35.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.botaniaadditions]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3,1.17)"
+    versionRange="[1.16.4,1.17)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.botaniaadditions]]
